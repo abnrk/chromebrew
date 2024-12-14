@@ -69,8 +69,8 @@ class Qemu < Package
 
   def self.patch
     # https://gitlab.com/qemu-project/qemu/-/issues/2718
-    downloader 'https://patchew.org/QEMU/20241213182337.3343068-1-peter.maydell@linaro.org/mbox', 'aasasaa', 'qemu_patch'
-    system 'patch -Np1 -i qemu_patch'
+    # downloader 'https://patchew.org/QEMU/20241213182337.3343068-1-peter.maydell@linaro.org/mbox', 'aasasaa', 'qemu_patch'
+    # system 'patch -Np1 -i qemu_patch'
 
     # Avoid linux/usbdevice_fs.h:88:9: error: unknown type name ‘u8’ error
     FileUtils.mkdir_p 'linux'
@@ -83,6 +83,7 @@ class Qemu < Package
     FileUtils.mkdir_p 'build'
     Dir.chdir 'build' do
       system "mold -run ../configure #{CREW_CONFIGURE_OPTIONS.sub(/--target.*/, '').gsub('vfpv3-d16', 'neon').gsub('--disable-dependency-tracking', '').sub(/--program-prefix.*?(?=\s|$)/, '').sub(/--program-suffix.*?(?=\s|$)/, '')} \
+        --disable-werror \
         --enable-kvm \
         --enable-lto"
       @counter = 1
