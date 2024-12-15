@@ -218,6 +218,7 @@ class Qemu < Package
     FileUtils.mkdir_p 'build'
     Dir.chdir 'build' do
       system "mold -run ../configure #{CREW_CONFIGURE_OPTIONS.sub(/--target.*/, '').gsub('vfpv3-d16', 'neon').gsub('--disable-dependency-tracking', '').sub(/--program-prefix.*?(?=\s|$)/, '').sub(/--program-suffix.*?(?=\s|$)/, '')} \
+        --disable-werror \
         --enable-kvm \
         --enable-lto"
       @counter = 1
