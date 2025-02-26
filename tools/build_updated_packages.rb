@@ -43,6 +43,7 @@ def self.check_build_uploads(architectures_to_check = nil, name = nil)
   architectures_to_check.delete('aarch64')
   architectures_to_check = %w[x86_64 armv7l i686] if (architectures_to_check & %w[x86_64 armv7l i686]).nil?
   builds_needed = architectures_to_check.dup
+  return builds_needed if name = 'chruby'
   architectures_to_check.each do |arch|
     arch_specific_url = "#{CREW_GITLAB_PKG_REPO}/generic/#{name}/#{@pkg_obj.version}_#{arch}/#{name}-#{@pkg_obj.version}-chromeos-#{arch}.#{@pkg_obj.binary_compression}"
     puts "Checking: curl -sI #{arch_specific_url}" if CREW_VERBOSE
